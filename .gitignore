@@ -1,0 +1,16 @@
+
+# Ignore virtual environments
+/venv
+
+# Data files
+/data/raw/*
+/data/processed/*
+
+# Ignore Python cache files
+__pycache__/
+
+# Environment files
+.env
+
+# testing
+testing.py
