@@ -49,7 +49,6 @@ class MTGDataIngestion:
         Download the latest Scryfall bulk card data.
         Uses the oracle_cards endpoint which has one entry per unique card to avoid reprints/special cards/foils vs normals, etc..
         """
-        print("Fetching bulk data")
 
         # Get the bulk data info from Scryfall API and convvert to JSON
         # raise error if the request fails
@@ -86,8 +85,7 @@ class MTGDataIngestion:
 
         """Download the MTG Comprehensive Rules text file."""
 
-        print(f"Downloading MTG Comprehensive Rules")
-
+        
         # Download the rules and check for errors
         response = requests.get(MTG_RULES_URL)
         response.raise_for_status()
@@ -103,8 +101,7 @@ class MTGDataIngestion:
         Process raw Scryfall cards into a format suitable for RAG.
         
         """
-        print("Processing card data")
-
+    
         # If the raw cards file does not exist raise an error
         if not self.raw_cards_file.exists():
             raise FileNotFoundError(f"Raw cards file not found: {self.raw_cards_file}")
@@ -198,7 +195,7 @@ class MTGDataIngestion:
     def process_rules(self) -> List[Dict[str, Any]]:
         """
         Process the comprehensive rules into chunks suitable for RAG.
-        Splits rules by sections and create searchable chunks.
+        Simply chunks the entire rules document using LangChain text splitter.
         """
         print("Processing comprehensive rules")
 
@@ -210,61 +207,21 @@ class MTGDataIngestion:
         with open(self.raw_rules_file, 'r', encoding='utf-8') as f:
             rules_text = f.read()
 
-        # list to hold the chunks of the processed rules
+        # Use LangChain text splitter to chunk the entire rules document
+        chunks = self.text_splitter.split_text(rules_text)
+
+        # Process each chunk into the format expected for RAG
         processed_rules = []
-
-        # Split by main sections (rules starting with numbers like "100.", "200.", etc.)
-        current_section = None
-        current_text = []
-
-        for line in rules_text.split('\n'):
-            line = line.strip()
-
-            # Detect main section headers (e.g., "1. Game Concepts")
-            if line and line[0].isdigit() and '. ' in line[:10]:
-                # Save previous section
-                if current_section and current_text:
-                    section_text = '\n'.join(current_text)
-                    # Chunk long sections using LangChain text splitter
-                    chunks = self.text_splitter.split_text(section_text)
-
-                    for i, chunk in enumerate(chunks):
-                        processed_rules.append({
-                            'section': current_section,
-                            'text': chunk,
-                            'chunk_index': i,
-                            'total_chunks': len(chunks),
-                            'metadata': {
-                                'source': 'comprehensive_rules',
-                                'type': 'rule',
-                                'section': current_section
-                            }
-                        })
-
-                # Start new section
-                current_section = line
-                current_text = [line]
-            else:
-                if line:  # Skip empty lines
-                    current_text.append(line)
-
-        # Don't forget the last section
-        if current_section and current_text:
-            section_text = '\n'.join(current_text)
-            chunks = self.text_splitter.split_text(section_text)
-
-            for i, chunk in enumerate(chunks):
-                processed_rules.append({
-                    'section': current_section,
-                    'text': chunk,
+        for i, chunk in enumerate(chunks):
+            processed_rules.append({
+                'text': chunk,
+                'metadata': {
+                    'source': 'comprehensive_rules',
+                    'type': 'rule',
                     'chunk_index': i,
-                    'total_chunks': len(chunks),
-                    'metadata': {
-                        'source': 'comprehensive_rules',
-                        'type': 'rule',
-                        'section': current_section
-                    }
-                })
+                    'total_chunks': len(chunks)
+                }
+            })
 
         # Save processed rules
         with open(self.processed_rules_file, 'w', encoding='utf-8') as f:
