@@ -195,10 +195,9 @@ class MTGDataIngestion:
     def process_rules(self) -> List[Dict[str, Any]]:
         """
         Process the comprehensive rules into chunks suitable for RAG.
-        Simply chunks the entire rules document using LangChain text splitter.
+        
         """
-        print("Processing comprehensive rules")
-
+        
         # if the raw rules does not exist (not downloaded) raise an error
         if not self.raw_rules_file.exists():
             raise FileNotFoundError(f"Raw rules file not found: {self.raw_rules_file}")
@@ -226,10 +225,7 @@ class MTGDataIngestion:
         # Save processed rules
         with open(self.processed_rules_file, 'w', encoding='utf-8') as f:
             json.dump(processed_rules, f, indent=2)
-
-        print(f"Processed {len(processed_rules)} rule chunks")
-        print(f"Saved to: {self.processed_rules_file}")
-
+        
         return processed_rules
 
     def run_full_ingestion(self) -> None:
@@ -259,7 +255,7 @@ class MTGDataIngestion:
             print("\nProcessing rules data")
             rules = self.process_rules()
 
-            # Summary of ingetsiong inclduing total card and chunks
+            # Summary of ingestion
             print(f"Total cards processed: {len(cards)}")
             print(f"Total rule chunks: {len(rules)}")
             print(f"\nProcessed data saved to: {PROCESSED_DATA_DIR}")
