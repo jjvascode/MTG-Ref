@@ -1,6 +1,3 @@
-"""
-Test script for MTGRetriever - demonstrates retrieval functionality
-"""
 from src.vectorstore.vector_store import MTGVectorStore
 from src.retrieval.retriever import MTGRetriever
 
@@ -8,10 +5,10 @@ from src.retrieval.retriever import MTGRetriever
 def test_retriever():
     """Test the retriever with sample queries."""
 
-    print("Initializing vector store...")
+    print("Initializing vector store:")
     vector_store = MTGVectorStore()
 
-    print("Initializing retriever...")
+    print("Initializing retriever:")
     retriever = MTGRetriever(vector_store)
 
     # Test queries demonstrating different types

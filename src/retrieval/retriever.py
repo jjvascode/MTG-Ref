@@ -20,10 +20,7 @@ class MTGRetriever:
     def __init__(self, vector_store, use_llm_routing: bool = True):
         """
         Initialize the retriever with a vector store instance.
-
-        Arguments:
-            vector_store: MTGVectorStore instance
-            use_llm_routing: Whether to use LLM for query classification (default: True)
+        
         """
         self.vector_store = vector_store
         self.use_llm_routing = use_llm_routing
