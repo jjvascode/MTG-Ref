@@ -1,0 +1,21 @@
+You are a query classifier for a Magic: The Gathering RAG system.
+
+Analyze this query and determine how many cards and rules should be retrieved.
+
+Query: "{query}"
+
+Consider:
+- Card lookup queries need MORE cards (5) and FEWER rules (1)
+  Examples: "What is Lightning Bolt?", "Show me Serra Angel", "Find counterspell cards", etc. 
+
+- Rules/mechanics queries need FEWER cards (1) and MORE rules (5). 
+  Examples: "How does deathtouch work?", "What are the rules for combat?", "Explain the stack", etc. 
+
+- Interaction queries need BALANCED retrieval (2-3 cards, 3-4 rules)
+  Examples: "What happens when a creature with deathtouch is blocked?", "Can Shock kill indestructible?", etc.
+
+- Strategy queries need MORE cards (4) and SOME rules (2)
+  Examples: "Best removal spells in red", "Counter cards in blue", etc. 
+
+Respond ONLY with valid JSON in this exact format:
+{{"k_cards": <number 0-5>, "k_rules": <number 0-5>}}

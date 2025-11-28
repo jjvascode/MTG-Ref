@@ -202,10 +202,10 @@ class MTGVectorStore:
 
 
 if __name__ == "__main__":
-    # Initialize vector store and load all data
-    vector_store = MTGVectorStore()
+
+    mtg_vector_store = MTGVectorStore()
 
     # Clear existing data
-    vector_store.clear_database()
+    mtg_vector_store.clear_database()
 
-    vector_store.load_all_data()
+    mtg_vector_store.load_all_data()
