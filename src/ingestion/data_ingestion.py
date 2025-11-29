@@ -3,7 +3,7 @@ import json
 from typing import List, Dict, Any
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from src.config import (
+from config import (
     RAW_DATA_DIR,
     PROCESSED_DATA_DIR,
     SCRYFALL_BULK_DATA_URL,

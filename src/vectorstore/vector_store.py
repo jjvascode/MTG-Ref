@@ -4,7 +4,7 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
 
-from src.config import (
+from config import (
     CHROMA_DB_DIR,
     CHROMA_COLLECTION_NAME,
     OPENAI_API_KEY,

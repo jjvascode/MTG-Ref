@@ -4,7 +4,7 @@ from langchain_core.documents import Document
 from langchain_openai import ChatOpenAI
 import json
 
-from src.config import OPENAI_API_KEY
+from config import OPENAI_API_KEY
 
 # Prompts directory
 PROMPTS_DIR = Path(__file__).parent.parent / "prompts"
